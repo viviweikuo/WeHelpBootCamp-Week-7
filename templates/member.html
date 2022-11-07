@@ -93,8 +93,8 @@
                 let newName = document.getElementById("name").value;
                 let newNameArray = {name: newName};
                 const request = new XMLHttpRequest();
-                request.open("PATCH", "/api/member/update");
-                request.send(newNameArray);
+                request.open("PATCH", "/api/member");
+                request.send(JSON.stringify(newNameArray));
 
                 updateData();
             }
@@ -106,7 +106,7 @@
                 let newNameArray = {name: newName};
                 let newNameElement = document.querySelector(".new-name");
 
-                fetch("http://127.0.0.1:3000/api/member/update",{
+                fetch("http://127.0.0.1:3000/api/member",{
                     method: "PATCH",
                     body: JSON.stringify(newNameArray),
                     headers: {
@@ -124,7 +124,7 @@
                     }
                 });
             };
-            
+
         </script>
     </main>
 </body>
