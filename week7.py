@@ -120,7 +120,7 @@ def search_name():
         json_string = jsonify(search_data)
         return json_string
 
-@week7.route("/api/member/update", methods=["PATCH"])
+@week7.route("/api/member", methods=["PATCH"])
 def update_name():
     # save new name
     newNameArray = request.get_json("newName")
