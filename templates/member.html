@@ -94,7 +94,7 @@
                 let newNameArray = {name: newName};
                 const request = new XMLHttpRequest();
                 request.open("PATCH", "/api/member");
-                request.send(JSON.stringify(newNameArray));
+                request.send(newNameArray);
 
                 updateData();
             }
