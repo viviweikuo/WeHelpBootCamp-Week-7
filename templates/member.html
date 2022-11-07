@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <main>
+        <div>
+            歡迎光臨，這是會員頁面。
+        </div>
+
+        <div>
+            {{ name }}，恭喜您！
+            成功登入系統。
+        </div>
+
+        <div>
+            <a href="/signout">登出系統</a>
+        </div>
+
+        <hr>
+
+        <div class="form-group">
+            <h4>查詢會員姓名</h4>
+            <input type="text" name="username" id="username" placeholder="請輸入會員帳號">
+            <button onclick="sendUsernameData();">查詢</button>
+            <div class="member-name"></div>
+        </div>
+
+        <hr>
+
+        <div class="form-group">
+            <h4>修改我的姓名</h4>
+            <input type="text" name="new-name" id="name" placeholder="請輸入新的姓名"> 
+            <button onclick="sendNameData();">修改</button>
+            <div class="new-name"></div>
+        </div>
+
+        <hr>
+
+        <div>
+            <h4>留下足跡：</h4>
+            <form action="/message" method="POST">
+                <input type="text" name="message"><br/>
+                <button>送出</button>
+            </form>
+        </div>
+
+        <hr>
+
+        <div>
+            {{ name }} : {{ message }}
+        </div>
+
+        <script>
+
+            // 查詢：傳送資料到API
+            function sendUsernameData(){
+                let username = document.getElementById("username").value;
+                const request = new XMLHttpRequest();
+                request.open("GET", "/api/member");
+                request.send(username);
+
+                getData();
+
+            }
+
+            // 查詢：將資料從API傳回前端
+            function getData(){
+
+                let username = document.getElementById("username").value;
+                let memberNameElement = document.querySelector(".member-name");
+
+                fetch("http://127.0.0.1:3000/api/member?username=" + username)
+                .then(function(response){return response.json();})
+                .then(function(data){
+
+                    if ( data.data != null ){
+                        for ( let i in data){
+                            let memberData = data[i];
+                            memberNameElement.innerHTML = memberData.name + "(" + memberData.username + ")";
+                        };
+                    } else {
+                        memberNameElement.innerHTML = "沒有這個人";
+                    }
+                });
+            };
+
+            // 修改：傳送資料到API
+            function sendNameData(){
+                let newName = document.getElementById("name").value;
+                let newNameArray = {name: newName};
+                const request = new XMLHttpRequest();
+                request.open("PATCH", "/api/member/update");
+                request.send(newNameArray);
+
+                updateData();
+
+            }
+
+            // 修改：將資料從API傳回前端
+            function updateData(){
+
+                let newName = document.getElementById("name").value;
+                let newNameArray = {name: newName};
+                let newNameElement = document.querySelector(".new-name");
+
+                fetch("http://127.0.0.1:3000/api/member/update",{
+                    method: "PATCH",
+                    body: JSON.stringify(newNameArray),
+                    headers: {
+                        "Content-Type": "application/json",
+                        },
+                    })
+                .then(function(response){return response.json();})
+                .then(function(data){
+                    
+                    if (data["ok"]){
+                        newNameElement.innerHTML = "更新成功";
+
+                    } else {
+                        newNameElement.innerHTML = "更新失敗";
+                    }
+
+
+                });
+
+            };
+
+
+        </script>
+    </main>
+</body>
+</html>
