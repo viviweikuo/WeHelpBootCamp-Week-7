@@ -1,8 +1,6 @@
 import sys
 import json
 import mysql.connector
-import cgi
-import cgitb
 from flask import Flask
 from flask import request 
 from flask import render_template
