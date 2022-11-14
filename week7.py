@@ -22,7 +22,7 @@ week7.secret_key = "大正紅茶拿鐵微糖去冰"
 website = mysql.connector.connect(
     host = "localhost",
     user = "viviweikuo",
-    password = "zxcvbnmM12*",
+    password = "****",
     database = "website"
 )
 
